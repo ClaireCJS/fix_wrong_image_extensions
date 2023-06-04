@@ -24,432 +24,12 @@ import clairecjs_utils as claire
 init()
 
 
-#def remove_duplicate_extension_OLD(filename):
-#    words = filename.split('.')
-#    seen = []
-#    for word in words:
-#        if word not in seen:
-#            seen.append(word)
-#    return '.'.join(seen)
 
-#def remove_duplicate_extension(filename):
-#    name_parts = filename.split('.')
-#    if len(name_parts) < 2:
-#        # Filename has no extension
-#        return filename
-#
-#    main_part = name_parts[0]
-#    extensions = name_parts[1:]
-#
-#    seen = []
-#    for ext in extensions:
-#        if ext not in seen:
-#            seen.append(ext)
-#
-#    return '.'.join([main_part] + seen)
-
-#def remove_duplicate_extension(filename):
-#    name_parts = filename.split('.')
-#    if len(name_parts) < 2:
-#        # Filename has no extension
-#        return filename
-#
-#    main_part = name_parts[0]
-#    extensions = name_parts[1:]
-#
-#    # If there is only one extension, return as is
-#    if len(extensions) == 1:
-#        return filename
-#
-#    # Check if the first extension (original one) appears later in the extensions
-#    if extensions[0] in extensions[1:]:
-#        # If so, move the first extension to the end
-#        extensions.append(extensions.pop(0))
-#
-#    seen = []
-#    for ext in extensions:
-#        if ext not in seen:
-#            seen.append(ext)
-#
-#    return '.'.join([main_part] + seen)
-
-
-#def remove_duplicate_extension(filename, image_type):
-#    name_parts = filename.split('.')
-#    if len(name_parts) < 2:
-#        # Filename has no extension
-#        return filename
-#
-#    main_part = name_parts[0]
-#    extensions = name_parts[1:]
-#
-#    # If there is only one extension, return as is
-#    if len(extensions) == 1:
-#        return filename
-#
-#    # Check if the first extension (original one) appears later in the extensions
-#    if extensions[0] in extensions[1:]:
-#        # If so, move the first extension to the end
-#        extensions.append(extensions.pop(0))
-#
-#    seen = []
-#    for ext in extensions:
-#        if ext not in seen:
-#            seen.append(ext)
-#
-#    # Remove the duplicate extension if present
-#    if image_type.lower() in seen:
-#        seen.remove(image_type.lower())
-#
-#    return '.'.join([main_part] + seen)
-
-
-
-def remove_duplicate_extension_1118am(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        return filename
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    for ext in extensions:
-        if ext.lower() in seen:
-            continue
-        # Check if image type is specified and remove any non-matching known image extensions
-        if image_type and ext.lower() in known_image_extensions and ext.lower() != image_type.lower():
-            continue
-        seen.append(ext.lower())
-
-    # If image type is specified, ensure it is the last extension if present
-    if image_type and image_type.lower() in seen:
-        seen.remove(image_type.lower())
-        seen.append(image_type.lower())
-
-    return '.'.join([main_part] + seen)
-
-
-def remove_duplicate_extension_passed11outof12(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:                                                                                           # Filename has no extension
-        if image_type: name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part  = name_parts[0]
-    extensions = name_parts[1:]
-
-    seen = []                                                                                                         # Remove the duplicate and incorrect extensions
-    for ext in extensions:
-        if ext.lower() in seen: continue
-        if image_type and ext.lower() in known_image_extensions and ext.lower() != image_type.lower(): continue       # Check if image type is specified and remove any non-matching known image extensions
-        seen.append(ext.lower())
-
-    if image_type and image_type.lower() in seen:                                                                     # If image type is specified, ensure it is the last extension if present
-        seen.remove(image_type.lower())
-        seen.append(image_type.lower())
-
-    return '.'.join([main_part] + seen)
-
-def remove_duplicate_extension_PASSED_13_TESTS(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        if image_type:
-            name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    for ext in extensions:
-        if ext.lower() in seen:
-            continue
-        # Check if image type is specified and remove any non-matching known image extensions
-        if image_type and ext.lower() in known_image_extensions:
-            if ext.lower() == image_type.lower() and image_type.lower() not in seen:
-                seen.append(ext.lower())
-            continue
-        seen.append(ext.lower())
-
-    # If image type is specified, ensure it is the last extension if present
-    if image_type:
-        if image_type.lower() not in seen:
-            seen.append(image_type.lower())
-        else:
-            seen.remove(image_type.lower())
-            seen.append(image_type.lower())
-
-    return '.'.join([main_part] + seen)
-
-def remove_duplicate_extension_1157(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        if image_type:
-            name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    for ext in extensions:
-        if ext.lower() in seen:
-            continue
-        # Check if image type is specified and remove any non-matching known image extensions
-        if image_type and ext.lower() in known_image_extensions:
-            if ext.lower() == image_type.lower() and image_type.lower() not in seen:
-                seen.append(ext.lower())
-            continue
-        seen.append(ext.lower())
-
-    # If image type is specified, ensure it is the last extension if present
-    if image_type is not None:
-        if image_type.lower() in seen:
-            seen.remove(image_type.lower())
-        seen.append(image_type.lower())                                                 # Append image type extension at the end but only if image_type is defined
-
-    return '.'.join([main_part] + seen)
-
-
-def remove_duplicate_extension_1253(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        if image_type:
-            name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    for ext in extensions:
-        if ext.lower() in seen:
-            continue
-        # Check if image type is specified and remove any non-matching known image extensions
-        if image_type and ext.lower() in known_image_extensions:
-            if ext.lower() == image_type.lower() and image_type.lower() not in seen:
-                seen.append(ext.lower())
-            continue
-        seen.append(ext.lower())
-
-    # If image type is specified, ensure it is the last extension if present
-    if image_type is not None:
-        if image_type.lower() in seen:
-            seen.remove(image_type.lower())
-        if image_type.lower() not in seen:
-            seen.append(image_type.lower())
-
-    return '.'.join([main_part] + seen)
-
-
-
-def remove_duplicate_extension_bad_suggestion(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        if image_type:
-            name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    final_extensions = []
-
-    for ext in extensions:
-        if ext.lower() in seen:
-            # Check if the repeating extension should be preserved
-            if ext.lower() in known_image_extensions or ext == extensions[-1]:  # Preserve if it's part of known image extensions or if it occurs at the end
-                final_extensions.append(ext.lower())
-        else:
-            seen.append(ext.lower())
-            final_extensions.append(ext.lower())
-
-    # If image type is specified, ensure it is the last extension if present
-    if image_type is not None:
-        if image_type.lower() in final_extensions:
-            final_extensions.remove(image_type.lower())
-        final_extensions.append(image_type.lower())
-
-    return '.'.join([main_part] + final_extensions)
-
-
-
-def remove_duplicate_extension_ALMOST_PERFECT(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        if image_type:
-            name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    for ext in extensions:
-        if ext.lower() in seen:
-            continue
-        # Check if image type is specified and remove any non-matching known image extensions
-        if image_type and ext.lower() in known_image_extensions:
-            if ext.lower() == image_type.lower() and image_type.lower() not in seen:
-                seen.append(ext.lower())
-            continue
-        seen.append(ext.lower())
-
-    # If image type is specified, ensure it is the last extension if present
-    if image_type:
-        if image_type.lower() not in seen:
-            seen.append(image_type.lower())
-        else:
-            seen.remove(image_type.lower())
-            seen.append(image_type.lower())
-
-    return '.'.join([main_part] + seen)
-
-
-
-
-
-
-
-def remove_duplicate_extension_fail_3_out_of_15_100pm(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        if image_type:
-            name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    for ext in extensions:
-        # if extension is not in known_image_extensions, add to seen list
-        if ext.lower() not in known_image_extensions:
-            seen.append(ext.lower())
-        # if extension is in known_image_extensions and is the image_type and is not already in seen, add to seen list
-        elif ext.lower() == image_type.lower() and ext.lower() not in seen:
-            seen.append(ext.lower())
-        # if extension is in known_image_extensions and is not the image_type, ignore
-
-    # If image type is specified and not in seen, add it to the end
-    if image_type and image_type.lower() not in seen:
-        seen.append(image_type.lower())
-
-    return '.'.join([main_part] + seen)
-
-
-
-
-
-
-def remove_duplicate_extension_almost_but_gave_up(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        if image_type:
-            name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    for ext in extensions:
-        # if extension is not in known_image_extensions, add to seen list
-        if ext.lower() not in known_image_extensions:
-            seen.append(ext.lower())
-        # if extension is in known_image_extensions and is the image_type, ignore (we'll handle it later)
-        elif image_type and ext.lower() == image_type.lower():
-            continue
-        # if extension is in known_image_extensions and is not the image_type, ignore
-
-    # If image type is specified, add it to the end
-    if image_type:
-        seen.append(image_type.lower())
-
-    return '.'.join([main_part] + seen)
-
-
-
-
-
-
-def remove_duplicate_extension_ALL_BUT_TWO(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
-
-    name_parts = filename.split('.')
-    if len(name_parts) < 2:
-        # Filename has no extension
-        if image_type:
-            name_parts.append(image_type.lower())
-        return '.'.join(name_parts)
-
-    main_part = name_parts[0]
-    extensions = name_parts[1:]
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
-    for ext in extensions:
-        #BUG?> if ext.lower() in seen: continue
-        if ext.lower() in seen and ext.lower() in known_image_extensions: continue # Modified this line
-        # Check if image type is specified and remove any non-matching known image extensions
-        if image_type and ext.lower() in known_image_extensions:
-            if ext.lower() == image_type.lower() and image_type.lower() not in seen:
-                seen.append(ext.lower())
-            continue
-        seen.append(ext.lower())
-
-    # If image type is specified, ensure it is the last extension if present
-    if image_type:
-        if image_type.lower() not in seen:
-            seen.append(image_type.lower())
-        else:
-            seen.remove(image_type.lower())
-            seen.append(image_type.lower())
-
-    return '.'.join([main_part] + seen)
-
-
-
+known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
 
 
 def remove_duplicate_extension(filename, image_type=None, testing=False):
-    known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
+    global known_image_extensions
 
     name_parts = filename.split('.')
     if len(name_parts) < 2:
@@ -461,29 +41,20 @@ def remove_duplicate_extension(filename, image_type=None, testing=False):
     main_part = name_parts[0]
     extensions = name_parts[1:]
 
-
-
     # Remove any duplicate extensions at the end
     while len(extensions) >= 2 and extensions[-1] == extensions[-2]:
-        #print(f"\nExtensions are {extensions}")
-        #print(f"Extensions[-1] is {extensions[-1]}")
-        #print(f"Extensions[-2] is {extensions[-2]}")
+        #print(f"\nExtensions are {extensions}\nExtensions[-1] is {extensions[-1]}\nExtensions[-2] is {extensions[-2]}")
         extensions.pop()
 
-
-    # Remove the duplicate and incorrect extensions
-    seen = []
+    seen = []                                                                                       # Remove the duplicate and incorrect extensions
     for ext in extensions:
-        #BUG?> if ext.lower() in seen: continue
-        if ext.lower() in seen and ext.lower() in known_image_extensions: continue # Modified this line
-        # Check if image type is specified and remove any non-matching known image extensions
+        if ext.lower() in seen and ext.lower() in known_image_extensions: continue                  # Check if image type is specified and remove any non-matching known image extensions
         if image_type and ext.lower() in known_image_extensions:
             if ext.lower() == image_type.lower() and image_type.lower() not in seen:
                 seen.append(ext.lower())
             continue
-        seen.append(ext.lower())
-
-
+        #een.append(ext.lower())
+        seen.append(ext)    #try preserving case of it's not a real extension
 
     # If image type is specified, ensure it is the last extension if present
     if image_type:
@@ -507,6 +78,7 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
     ANNOUNCE_OUR_RENAMES = True
     ANNOUNCE_EACH_FILE   = False
     VIDEO_FILE_SUPPORT   = False
+    global known_image_extensions
 
     #print(f"* detect_wrong_image_extension({directory})")
     if os.path.isfile(directory):
@@ -560,7 +132,7 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
         if testing: print(f"\t- correct_filenames_extracted_extension is now[C] = {correct_filenames_extracted_extension}")
         correct_file_path = os.path.join(directory, correct_filename)                                                                           #if testing: print(f"\t- correct_file_path is now[C] = {correct_file_path}")
 
-        if file_path != correct_file_path:
+        if file_path.lower() != correct_file_path.lower():                                                                                          #added lower() to stop renaming when case difference is the only difference
             last_corrected_filename = correct_filename
             if not testing: claire.rename(file_path, correct_file_path)
             else:
