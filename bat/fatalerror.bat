@@ -1,0 +1,1 @@
+@call fatal_error %*
