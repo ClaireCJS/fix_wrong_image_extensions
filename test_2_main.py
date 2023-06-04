@@ -178,6 +178,31 @@ class TestClaireFiles(unittest.TestCase):
 
 
 
+    def test_no_extension_1(self):
+        self.sub_test_announce(1)
+        testing_images_true_extension = "gif"
+        testing_filename              = "a"
+        expected_filename             = "a.gif"
+        _, new_filename               = fix_wrong_image_extensions.detect_wrong_image_extension(".",0,testing=True, testing_filename=testing_filename, testing_images_true_extension=testing_images_true_extension)
+        print(f"{Fore.BLUE}filename: testing={testing_filename}, expected_filename={expected_filename}, new_filename={new_filename}{Fore.YELLOW}")
+        self.assertEqual(new_filename,expected_filename)
+
+
+
+    def only_extension_1(self):
+        self.sub_test_announce(1)
+        testing_images_true_extension = "gif"
+        testing_filename              = "jpg"
+        expected_filename             = "jpg.gif"
+        _, new_filename               = fix_wrong_image_extensions.detect_wrong_image_extension(".",0,testing=True, testing_filename=testing_filename, testing_images_true_extension=testing_images_true_extension)
+        print(f"{Fore.BLUE}filename: testing={testing_filename}, expected_filename={expected_filename}, new_filename={new_filename}{Fore.YELLOW}")
+        self.assertEqual(new_filename,expected_filename)
+
+
+
+
+
+
 
 
 
