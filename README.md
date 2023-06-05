@@ -33,15 +33,23 @@ Wrong filenames, such as:
 
 ## Installation: Python
 
-Just install the appropriate packages, and the script should be ready to go.
+Install the appropriate packages:
 
 ```bash
 pip install -r requirements.txt
 ```
 
+Get clairecjs_utils
+```bash
+pip install clairecjs_utils
+```
+
+Or if that doesn't work grab the actual clairecjs_utils files from 
+
  ## Testing
 
-Two unit test files
+Two unit test files provided to prove it actually works
+
 
 ## Usage: Monitor mode / Service mode
 
