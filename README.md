@@ -30,7 +30,6 @@ Wrong filenames, such as:
 
 
 
-
 ## Installation: Python
 
 Install the appropriate packages:
