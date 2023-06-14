@@ -136,12 +136,12 @@ goto :END_OF_SUBROUTINES
                                     %UNZIP_COMMAND% >"%OUR_TXT"
                                     call errorlevel "Unzipping our associated %shared_type% file failed?!"
                                     call validate-environment-variable OUR_TXT
-
-                            REM make sure we add everything to the repo
-                                    set SKIP_GIT_ADD_VALIDATION=1
-                                    echo call git-add %PROJECT_DIR%\%SECONDARY_SUBFOLDER_FOLDERNAME%\*.* 
-                                         call git-add %PROJECT_DIR%\%SECONDARY_SUBFOLDER_FOLDERNAME%\*.* 
                         popd
+
+                        REM make sure we add everything to the repo
+                                set SKIP_GIT_ADD_VALIDATION=1
+                                echo call git-add %PROJECT_DIR%\%SECONDARY_SUBFOLDER_FOLDERNAME%\*.* 
+                                     call git-add %PROJECT_DIR%\%SECONDARY_SUBFOLDER_FOLDERNAME%\*.* 
             :No_Files_Of_This_Type
         return
 :END_OF_SUBROUTINES
@@ -152,7 +152,10 @@ goto :END_OF_SUBROUTINES
 
 
 
-rem CELEBRATE:
+rem reset our values so they don't accidentally get re-used, and CELEBRATE:
+        SET MANIFEST_FILES=
+        set SECONDARY_BAT_FILES=
+        set SECONDARY_UTIL_FILES=
         call success "*** Successfully updated from personal to '%PROJECT_NAME%' :)"
         echo.
         %PROJECT_DIR%\%
