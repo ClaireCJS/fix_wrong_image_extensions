@@ -119,10 +119,8 @@ goto :END_OF_SUBROUTINES
                                     set ZIP_COMMAND=*zip %ZIP_OPTIONS% %OUR_ZIP% %OUR_FILELIST%
                             REM suppress stdout, any output now would be stderr so color it as such
                                     call important_less "Zipping associated %shared_type% files..."
-                                    set debug=1
                                     call print-if-debug "    zip command: %ZIP_COMMAND%"
                                     call print-if-debug "            CWD: %_CWD%"
-                                    set debug=0
                                     REM choose your zip output strategy:
                                         REM %COLOR_ERRROR% %+ %ZIP_COMMAND% >nul
                                             %COLOR_SUCCESS %+ %ZIP_COMMAND% 

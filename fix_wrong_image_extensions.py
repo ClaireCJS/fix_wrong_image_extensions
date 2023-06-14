@@ -96,13 +96,15 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
 
     correct_filename = ""
     last_corrected_filename = ""
+    file_count = 0
     for file in files:
+        file_count +=1
         if ANNOUNCE_EACH_FILE:
             print(f'{Fore.GREEN}\t- Processing file "{file}"',flush=True,end="")
             if testing: print(f'{Fore.YELLOW}...testmode, testing_images_true_extension={Fore.RED}{testing_images_true_extension}{Fore.WHITE}',flush=True,end="")
             print()
         else:
-            print('.',end="",flush=True)
+            if file_count % 5 == 1: print('.',end="",flush=True)
 
 
         file_path = os.path.join(directory, file)
