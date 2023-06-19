@@ -137,9 +137,11 @@ goto :END_OF_SUBROUTINES
                         popd
 
                         REM make sure we add everything to the repo
+                                set SKIP_GIT_ADD_VALIDATION_OLD=%SKIP_GIT_ADD_VALIDATION%
                                 set SKIP_GIT_ADD_VALIDATION=1
-                                echo call git-add %PROJECT_DIR%\%SECONDARY_SUBFOLDER_FOLDERNAME%\*.* 
-                                     call git-add %PROJECT_DIR%\%SECONDARY_SUBFOLDER_FOLDERNAME%\*.* 
+                                call print-if-debug "git-add %PROJECT_DIR%\%SECONDARY_SUBFOLDER_FOLDERNAME%\*.*"
+                                call                 git-add %PROJECT_DIR%\%SECONDARY_SUBFOLDER_FOLDERNAME%\*.* 
+                                set SKIP_GIT_ADD_VALIDATION=%SKIP_GIT_ADD_VALIDATION_OLD%
             :No_Files_Of_This_Type
         return
 :END_OF_SUBROUTINES

@@ -25,7 +25,11 @@ init()
 
 
 
-known_image_extensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp", "ico", "tif", "tiff", "pcx", "art", "dcm", "jfif", "jpg_large", "png_large"]
+known_image_extensions = ["jpg", "jpg_large", "jpeg", "jfif",
+                          "png", "png_large",
+                          "gif", "webp", "bmp",
+                          "tif", "tiff",
+                          "ico", "pcx", "art", "dcm" ]
 
 
 def remove_duplicate_extension(filename, image_type=None, testing=False):
@@ -104,11 +108,12 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
             if testing: print(f'{Fore.YELLOW}...testmode, testing_images_true_extension={Fore.RED}{testing_images_true_extension}{Fore.WHITE}',flush=True,end="")
             print()
         else:
-            if file_count % 5 == 1: print('.',end="",flush=True)
-
+            if file_count % 5 == 1:
+                print('.',end="",flush=True)
+                claire.tick(mode="fg")                                              # cycle the color of the dots for visual flaire
 
         file_path = os.path.join(directory, file)
-        if not testing: image_type = imghdr.what(file_path)                             # get image type, or use the type we sent for unit testing
+        if not testing: image_type = imghdr.what(file_path)                         # get image type, or use the type we sent for unit testing
         else:           image_type = testing_images_true_extension
 
 
@@ -122,19 +127,19 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
         if testing: print(f"\t{Fore.CYAN}- base_name={base_name}, additional_part={additional_part}, extension={extension}, image_type={image_type}, current 'correct'_filename={correct_filename}")
 
         if image_type is not None:
-            if image_type.lower() == "jpeg": image_type = "jpg"                                                                                                  #fix pesky .jpegs to .jpg
+            if image_type.lower() == "jpeg": image_type = "jpg"                                                                         #fix pesky .jpegs to .jpg
             if VIDEO_FILE_SUPPORT:
-                if image_type.lower() == "mpeg": image_type = "mpg"                                                                                              #fix pesky .mpegs to .mpg
+                if image_type.lower() == "mpeg": image_type = "mpg"                                                                     #fix pesky .mpegs to .mpg
 
         #if extension.lower() != image_type:
-        if testing: print(f"\t- correct_filename  is now[0] = {correct_filename}")                                                                       #has .jpg.jpg in some situatoins
+        if testing: print(f"\t- correct_filename  is now[0] = {correct_filename}")                                                      #has .jpg.jpg in some situations
 
         correct_filename = remove_duplicate_extension(correct_filename, image_type)
         correct_filenames_extracted_extension = os.path.splitext(correct_filename)[1][1:]
         if testing: print(f"\t- correct_filenames_extracted_extension is now[C] = {correct_filenames_extracted_extension}")
-        correct_file_path = os.path.join(directory, correct_filename)                                                                           #if testing: print(f"\t- correct_file_path is now[C] = {correct_file_path}")
+        correct_file_path = os.path.join(directory, correct_filename)                                                                   #if testing: print(f"\t- correct_file_path is now[C] = {correct_file_path}")
 
-        if file_path.lower() != correct_file_path.lower():                                                                                          #added lower() to stop renaming when case difference is the only difference
+        if file_path.lower() != correct_file_path.lower():                                                                              #added lower() to stoprenaming when case difference is the only difference
             last_corrected_filename = correct_filename
             if not testing: claire.rename(file_path, correct_file_path)
             else:
@@ -144,19 +149,22 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
             warning_msg = f"\n{Style.BRIGHT}- Incorrect/wrong extension #{num_image_files_renamed} detected: {Style.NORMAL}{file} {Style.BRIGHT}-->{Style.NORMAL} {correct_filename}"
             if ANNOUNCE_OUR_RENAMES: print(f"{Fore.YELLOW}{warning_msg}{Fore.WHITE}",flush=True)
         else:
-            last_corrected_filename = correct_filename                                           #same thing as correct_filename in this situation
+            last_corrected_filename = correct_filename                                                                                 #same thing as correct_filename in this situation
+
+    claire.tock()                                                                                                                      #reset text color after cycling
 
     return num_image_files_renamed, last_corrected_filename
 
 
 def get_usage_msg():
-    return """
+    return f"""
 
-      INCORRECT IMAGE EXTENSION CORRECTOR
+      fix_wrong_image_extensions.py - incorrect image extension corrector
 
     * Add /c to correct image extensions in the current folder
-    * Add /s to correct image extensions in this and all subfolders!
+    * Add /s to correct image extensions in this and all subfolders!s
 
+    Image extensions known to this program: {known_image_extensions}
 """
 
 
