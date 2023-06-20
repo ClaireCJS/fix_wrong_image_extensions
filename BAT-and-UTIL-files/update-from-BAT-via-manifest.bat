@@ -31,9 +31,11 @@ rem VALIDATION & SETUP:
         set   COPY=*copy    /Ns    /U
         set UPDATE=*copy /q /Ns    /U
         set DELETE=*del /z /q
-        call validate-environment-variables MANIFEST_FILES BAT SOURCE_DIR COPY
-        call validate-in-path important_less success errorlevel
-
+        if %VALIDATED_UPDATEFROMBATVIAMANIFEST_ENV_ALREADY ne 1 (
+            call validate-environment-variables MANIFEST_FILES BAT SOURCE_DIR COPY
+            call validate-in-path important_less success errorlevel
+            set VALIDATED_UPDATEFROMBATVIAMANIFEST_ENV_ALREADY=1
+        )
 
 rem TELL USER:
         echo.
@@ -127,13 +129,13 @@ goto :END_OF_SUBROUTINES
                                     call errorlevel "Zipping our associated %shared_type% file failed?!"
                             REM ensure zip generated
                                     echo.>& nul
-                                    call validate-environment-variable OUR_ZIP
+                                    REM moved later for speedup call validate-environment-variable OUR_ZIP
                             REM create manifest file of what's in the ZIP and make sure it exists
                                     set UNZIP_COMMAND=*unzip /v %OUR_ZIP%  
                                     call print-if-debug "Unzip command is: %UNZIP_COMMAND ... and will redirect to target: '%OUR_TXT%'"
                                     %UNZIP_COMMAND% >"%OUR_TXT"
                                     call errorlevel "Unzipping our associated %shared_type% file failed?!"
-                                    call validate-environment-variable OUR_TXT
+                                    call validate-environment-variable OUR_ZIP OUR_TXT
                         popd
 
                         REM make sure we add everything to the repo
