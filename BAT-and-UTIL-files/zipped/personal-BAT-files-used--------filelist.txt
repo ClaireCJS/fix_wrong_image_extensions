@@ -7,7 +7,6 @@
 2023-06-04  20:28            274   41%  fatalerror.bat
 2023-06-14  13:08          8,401   73%  errorlevel.bat
 2023-05-29  22:39             43   -4%  advice.bat
-2023-06-14  03:25          9,053   72%  print-message.bat
 2019-10-01  10:28            331   52%  randcolor.bat
 2023-06-01  05:17            294   42%  success.bat
 2023-05-29  18:31             44   -4%  debug.bat
@@ -15,4 +14,5 @@
 2019-10-01  10:28            220   36%  randbg.bat
 2023-06-14  23:38          8,646   72%  update-from-BAT-via-manifest.bat
 2023-06-15  11:32          1,068   51%  validate-in-path.bat
-2023-06-16  13:02         11,623   75%  validate-environment-variable.bat
+2023-06-19  23:21         11,623   75%  validate-environment-variable.bat
+2023-06-19  23:35         12,775   73%  print-message.bat
