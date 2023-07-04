@@ -14,7 +14,7 @@ Wrong filenames, such as:
 
 * missing extensions
 
-        * a jpg file named "foo" will be renamed "foo.jpg"
+	* a jpg file named "foo" will be renamed "foo.jpg"
 
 * repeating extensions
 
@@ -48,7 +48,7 @@ Get clairecjs_utils
 pip install clairecjs_utils
 ```
 
-Or if that doesn't work grab the actual clairecjs_utils files from 
+Or if that doesn't work grab the actual clairecjs_utils files from [here](https://github.com/ClaireCJS/clairecjs_utils)
 
  ## Testing
 
