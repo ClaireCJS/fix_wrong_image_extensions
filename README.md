@@ -4,32 +4,37 @@ fix_wrong_image_extensions is a filename fixer that fixes the extension of image
 
 ## What "wrong" filenames does it fix, specifically?
 
-extensions of the wrong format
+1) wrong extensions 
 
-    * jpg saved as gif
-    * gif saved as jpg
-    * extra extensions of wrong format - a gif named "hello.png.jpg.kitty.gif" would be named "hello.kitty.gif"
+  * jpg saved as gif (would be renamed back to jpg)
+  * gif saved as jpg (would be renamed back to gif)
 
-missing extensions
+    
+2) missing extensions
 
-    * a jpg file named "foo" will be renamed "foo.jpg"
+  * a jpg file named "foo" will be renamed "foo.jpg"
 
-repeating extensions
+3) extra extensions 
 
-    * changes ".jpg.jpg" to ".jpg"
-    * will even change "foo.jpg.bar.jpg" to "foo.bar.jpg", assuming it's a jpg
-    * leaves repeating non-image extensions untouched
+  * a gif named "hello.png.jpg.kitty.gif" would be named "hello.kitty.gif"
 
-mis-positioned extensions
 
-    * "foo.jpg.bar" will become "foo.bar.jpg"
+4) repeating extensions
 
-annoying minor variances
+  * changes ".jpg.jpg.jpg" to ".jpg"
+  * changes "foo.jpg.bar.jpg" to "foo.bar.jpg"
+  * leaves repeating non-image extensions untouched
 
-    * jpg saved as .jpg_large
-    * jpg saved as .jpg_name=orig
-    * jpg saved as .jpeg
-    * jpg saved as .jfif
+5) mis-positioned extensions
+
+  * "foo.jpg.bar" will become "foo.bar.jpg"
+
+6) annoying minor variances
+
+  * jpgs saved as .jpeg
+  * jpgs saved as .jfif
+  * jpgs saved as .jpg_large
+  * jpgs saved as .jpg_name=orig
 
 
 
