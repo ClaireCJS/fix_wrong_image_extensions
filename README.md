@@ -8,9 +8,9 @@ Wrong filenames, such as:
 
 * extensions of the wrong format
 
-       * jpg saved as gif
-       * gif saved as jpg
-       * extra extensions of wrong format (a gif named "hello.png.jpg.kitty.gif" would be named "hello.kitty.gif")
+	* jpg saved as gif
+	* gif saved as jpg
+	* extra extensions of wrong format - a gif named "hello.png.jpg.kitty.gif" would be named "hello.kitty.gif"
 
 * missing extensions
 
@@ -18,9 +18,9 @@ Wrong filenames, such as:
 
 * repeating extensions
 
-        * changes ".jpg.jpg" to ".jpg"
+	* changes ".jpg.jpg" to ".jpg"
 	* will even change "foo.jpg.bar.jpg" to "foo.bar.jpg", assuming it's a jpg
-        * leaves repeating non-image extensions untouched
+	* leaves repeating non-image extensions untouched
 
 * mis-positioned extensions
 
