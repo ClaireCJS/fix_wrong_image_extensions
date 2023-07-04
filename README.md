@@ -7,22 +7,27 @@ fix_wrong_image_extensions is a filename fixer that fixes the extension of image
 Wrong filenames, such as:
 
 * extensions of the wrong format
+
        * jpg saved as gif
        * gif saved as jpg
        * extra extensions of wrong format (a gif named "hello.png.jpg.kitty.gif" would be named "hello.kitty.gif")
 
 * missing extensions
+
         * a jpg file named "foo" will be renamed "foo.jpg"
 
 * repeating extensions
+
         * changes ".jpg.jpg" to ".jpg"
 	* will even change "foo.jpg.bar.jpg" to "foo.bar.jpg", assuming it's a jpg
         * leaves repeating non-image extensions untouched
 
 * mis-positioned extensions
+
 	* "foo.jpg.bar" will become "foo.bar.jpg"
 
 * annoying minor variances
+
 	* jpg saved as .jpg_large
 	* jpg saved as .jpg_name=orig
 	* jpg saved as .jpeg
