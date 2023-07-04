@@ -4,6 +4,8 @@ fix_wrong_image_extensions is a filename fixer that fixes the extension of image
 
 ## What "wrong" filenames does it fix, specifically?
 
+It fixes any of these (and not just for JPGs--that's just the example used):
+
 1) wrong extensions 
 
     - jpg saved as gif (would be renamed back to jpg)
@@ -46,12 +48,12 @@ Install the appropriate packages:
 pip install -r requirements.txt
 ```
 
-Get clairecjs_utils
+Get clairecjs_utils:
 ```bash
 pip install clairecjs_utils
 ```
 
-Or if that doesn't work grab the actual clairecjs_utils files from [here](https://github.com/ClaireCJS/clairecjs_utils)
+Actually, that probably won't work, and you'll just have to manually grab the actual clairecjs_utils files from [here](https://github.com/ClaireCJS/clairecjs_utils). This one uses claire_console.py to cycle the foreground color while it is running. Purely for fun. Can easily be removed from the code by searching for "Claire" and commenting out those lines.
 
  ## Testing
 
