@@ -116,13 +116,13 @@ goto :END_OF_SUBROUTINES
                             REM Change into source folder to create our zip
                                     %SOURCE_DIR%\
                             REM freshen if existing zip, otherwise add to new zip
-                                    set ZIP_OPTIONS=/F
+                                    set ZIP_OPTIONS=/P /F /U
                                     if not exist %OUR_ZIP% set ZIP_OPTIONS=/A
                                     set ZIP_COMMAND=*zip %ZIP_OPTIONS% %OUR_ZIP% %OUR_FILELIST%
                             REM suppress stdout, any output now would be stderr so color it as such
                                     call important_less "Zipping associated %shared_type% files..."
-                                    call print-if-debug "    zip command: %ZIP_COMMAND%"
-                                    call print-if-debug "            CWD: %_CWD%"
+                                    call unimportant    "    zip command: %ZIP_COMMAND%"
+                                    call unimportant    "            CWD: %_CWD%"
                                     REM choose your zip output strategy:
                                         REM %COLOR_ERRROR% %+ %ZIP_COMMAND% >nul
                                             %COLOR_SUCCESS %+ %ZIP_COMMAND% 
@@ -131,9 +131,11 @@ goto :END_OF_SUBROUTINES
                                     echo.>& nul
                                     REM moved later for speedup call validate-environment-variable OUR_ZIP
                             REM create manifest file of what's in the ZIP and make sure it exists
-                                    set UNZIP_COMMAND=*unzip /v %OUR_ZIP%  
-                                    call print-if-debug "Unzip command is: %UNZIP_COMMAND ... and will redirect to target: '%OUR_TXT%'"
-                                    %UNZIP_COMMAND% >"%OUR_TXT"
+                                    REM set UNZIP_COMMAND=*unzip /v %OUR_ZIP%  
+                                    REM call print-if-debug "Unzip command is: %UNZIP_COMMAND ... and will redirect to target: '%OUR_TXT%'"
+                                    REM sort it (cygwin sort.exe) 
+                                    echo *unzip /v %OUR_ZIP% `|` call cygsort --ignore-case -k5 `>`"%OUR_TXT"
+                                         *unzip /v %OUR_ZIP%  |  call cygsort --ignore-case -k5  > "%OUR_TXT"
                                     call errorlevel "Unzipping our associated %shared_type% file failed?!"
                                     call validate-environment-variable OUR_ZIP OUR_TXT
                         popd
