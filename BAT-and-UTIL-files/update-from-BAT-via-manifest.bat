@@ -63,14 +63,18 @@ rem DO COPIES OF PRIMARY FILES TO PRIMARY PROJECT FOLDER:
         )
 
 
+rem DO SECONDARY FILES, OR SKIP THEM IF WE SAID TO:
+        if "%1" eq "skip" .or. "%1" eq "fast" .or. "%1" eq "quick" (goto :Skip)
 
+            rem SHARE REQUIRED BAT, UTIL FILES THAT WE USE, FOR FURTHER SUPPORT, TO SECONDARY PROJECT FOLDER:
+                    set SECONDARY_SUBFOLDER_FOLDERNAME=BAT-and-UTIL-files
+                    for %shared_type in (BAT UTIL) do (gosub process_type %shared_type)
 
-rem SHARE REQUIRED BAT, UTIL FILES THAT WE USE, FOR FURTHER SUPPORT, TO SECONDARY PROJECT FOLDER:
-        set SECONDARY_SUBFOLDER_FOLDERNAME=BAT-and-UTIL-files
-        for %shared_type in (BAT UTIL) do (gosub process_type %shared_type)
+        :Skip
 
 
 goto :END_OF_SUBROUTINES
+
         :process_type [shared_type]
             call print-if-debug "Doing shared_type='%shared_type%'"
             if not defined SECONDARY_%shared_type%_FILES goto :No_Files_Of_This_Type
