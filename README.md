@@ -39,6 +39,13 @@ It fixes any of these (and not just for JPGs--that's just the example used):
     - jpgs saved as .jpg_name=orig
 
 
+## Possible thing you might not like
+
+It does this for *ALL* files that are detected as images via header.
+
+The *ONLY* ones it skips are .bak files and files ending in ~
+
+This may not be the behavior you like. It wasn't for me, until I added the exception for .bak and ~ files ;)
 
 ## Installation: Python
 
