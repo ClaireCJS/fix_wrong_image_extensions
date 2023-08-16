@@ -98,6 +98,8 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
 
     if testing: files=[testing_filename]
 
+    #ANNOUNCE_EACH_FILE = True #rem goat
+
     correct_filename = ""
     last_corrected_filename = ""
     file_count = 0
@@ -123,7 +125,13 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
         additional_part = file[index:]
         extension       = additional_part[1:]                                       # will be ".crdownload" for a file ending in ".jpg.crdownload"
         correct_filename = base_name + additional_part
-        if image_type is not None: correct_filename = correct_filename + '.' + image_type
+
+        # skip for files that end in ~ or .bak
+        skip_file = False
+        if file.endswith("~") or file.endswith(".bak"): skip_file = True
+
+        # correct name based on inspection, but skip for certain files
+        if image_type is not None and skip_file is False: correct_filename = correct_filename + '.' + image_type
         if testing: print(f"\t{Fore.CYAN}- base_name={base_name}, additional_part={additional_part}, extension={extension}, image_type={image_type}, current 'correct'_filename={correct_filename}")
 
         if image_type is not None:
@@ -139,17 +147,18 @@ def detect_wrong_image_extension(directory=".", num_image_files_renamed=0, testi
         if testing: print(f"\t- correct_filenames_extracted_extension is now[C] = {correct_filenames_extracted_extension}")
         correct_file_path = os.path.join(directory, correct_filename)                                                                   #if testing: print(f"\t- correct_file_path is now[C] = {correct_file_path}")
 
-        if file_path.lower() != correct_file_path.lower():                                                                              #added lower() to stoprenaming when case difference is the only difference
-            last_corrected_filename = correct_filename
-            if not testing: claire.rename(file_path, correct_file_path)
+        if not skip_file:
+            if file_path.lower() != correct_file_path.lower():                                                                              #added lower() to stoprenaming when case difference is the only difference
+                last_corrected_filename = correct_filename
+                if not testing: claire.rename(file_path, correct_file_path)
+                else:
+                    print(f"{Fore.YELLOW}{Style.BRIGHT}claire.rename({file_path}, {correct_file_path}){Fore.WHITE}{Style.NORMAL}")
+                    return(1,correct_filename)
+                num_image_files_renamed += 1
+                warning_msg = f"\n{Style.BRIGHT}- Incorrect/wrong extension #{num_image_files_renamed} detected: {Style.NORMAL}{file} {Style.BRIGHT}-->{Style.NORMAL} {correct_filename}"
+                if ANNOUNCE_OUR_RENAMES: print(f"{Fore.YELLOW}{warning_msg}{Fore.WHITE}",flush=True)
             else:
-                print(f"{Fore.YELLOW}{Style.BRIGHT}claire.rename({file_path}, {correct_file_path}){Fore.WHITE}{Style.NORMAL}")
-                return(1,correct_filename)
-            num_image_files_renamed += 1
-            warning_msg = f"\n{Style.BRIGHT}- Incorrect/wrong extension #{num_image_files_renamed} detected: {Style.NORMAL}{file} {Style.BRIGHT}-->{Style.NORMAL} {correct_filename}"
-            if ANNOUNCE_OUR_RENAMES: print(f"{Fore.YELLOW}{warning_msg}{Fore.WHITE}",flush=True)
-        else:
-            last_corrected_filename = correct_filename                                                                                 #same thing as correct_filename in this situation
+                last_corrected_filename = correct_filename                                                                                 #same thing as correct_filename in this situation
 
     claire.tock()                                                                                                                      #reset text color after cycling
 

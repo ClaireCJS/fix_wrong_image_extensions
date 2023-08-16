@@ -61,7 +61,12 @@ REM Validate parameters
 
 
 REM convert special characters
-    set MESSAGE=%@REPLACE[\n,%@CHAR[12]%@CHAR[13],%@REPLACE[\t,%@CHAR[9],%@UNQUOTE[%MESSAGE]]]
+    set MESSAGE=%@UNQUOTE[%MESSAGE]
+    REM might want to do if %NEWLINE_REPLACEMENT eq 1 instead:
+    if %NEWLINE_REPLACEMENT eq 1 (
+        set MESSAGE=%@REPLACE[\n,%@CHAR[12]%@CHAR[13],%@REPLACE[\t,%@CHAR[9],%MESSAGE]]
+    )
+    if "%NEWLINE_REPLACEMENT%" != "" (set NEWLINE_REPLACEMENT=)
 
 
 REM Type alias/synonym handling
@@ -81,7 +86,8 @@ REM Behavior overides and message decorators depending on the type of message?
     if  "%TYPE%"  eq "LESS_IMPORTANT" (set DECORATOR_LEFT=* ``          %+ set DECORATOR_RIGHT=)
     if  "%TYPE%"  eq "IMPORTANT_LESS" (set DECORATOR_LEFT=* ``          %+ set DECORATOR_RIGHT=)
     if  "%TYPE%"  eq "IMPORTANT"      (set DECORATOR_LEFT=*** ``        %+ set DECORATOR_RIGHT=)
-    if  "%TYPE%"  eq "WARNING"        (set DECORATOR_LEFT=!! ``         %+ set DECORATOR_RIGHT= !!)
+    REM "%TYPE%"  eq "WARNING"        (set DECORATOR_LEFT=%EMOJI_WARNING%%EMOJI_WARNING%%EMOJI_WARNING% %blink%!!%blink_off% `` %+ set DECORATOR_RIGHT= %blink%!!%blink_off% %EMOJI_WARNING%%EMOJI_WARNING%%EMOJI_WARNING%)
+    if  "%TYPE%"  eq "WARNING"        (set DECORATOR_LEFT=%ANSI_COLOR_WARNING%%blink%!!%blink_off% %EMOJI_WARNING%%EMOJI_WARNING%%EMOJI_WARNING% %@ANSI_BG_RGB[0,0,255]% ``  %+  set DECORATOR_RIGHT= %ANSI_COLOR_WARNING% %EMOJI_WARNING%%EMOJI_WARNING%%EMOJI_WARNING% %blink%!!%blink_off%)
     if  "%TYPE%"  eq "CELEBRATION"    (set DECORATOR_LEFT=*** ``        %+ set DECORATOR_RIGHT=! ***)
     if  "%TYPE%"  eq "COMPLETION"     (set DECORATOR_LEFT=*** ``        %+ set DECORATOR_RIGHT=! ***)
     if  "%TYPE%"  eq "ALARM"          (set DECORATOR_LEFT=* ``          %+ set DECORATOR_RIGHT= *)
@@ -132,8 +138,8 @@ REM Actually display the message
             if "%TYPE%"     eq "UNIMPORTANT"  (echos %FAINT_ON%)
             if "%TYPE%"     eq "SUCCESS"      (echos  %BOLD_ON%)
             if "%TYPE%"     eq "CELEBRATION"  (
-                if        %msgNum        == 1 (echos %BIG_TOP_ON%    ``)
-                if        %msgNum        == 2 (echos %BIG_BOT_ON%    ``)
+                if        %msgNum        == 1 (echos %BIG_TOP_ON%``)
+                if        %msgNum        == 2 (echos %BIG_BOT_ON%``)
             )
             if "%TYPE%"     eq "ERROR"   (
                 if %@EVAL[%msgNum mod 2] == 1 (echos %REVERSE_ON%)
