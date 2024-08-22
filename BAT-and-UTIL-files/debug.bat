@@ -1,3 +1,3 @@
 @echo OFF
 
-call print-message debug %* 0
+call print-message debug %* 

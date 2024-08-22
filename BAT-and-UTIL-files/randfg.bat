@@ -1,25 +1,22 @@
 @Echo OFF
 
-:: Unfortunately, these internal variables don't actually work right:
-    set OLDFG=%_FG
-    set OLDBG=%_BG  
+
+:REQUIRES: set-colors.bat (to create RANDFG function) to have been run
+
+echos %@RANDFG[]
 
 
-
-
-
-:ReBG
-    ::8,15 = bright colors only // 0,15 = all colors
-    SET FG=%@RANDOM[8,15]                           
-    set NEXT_COLOR=%FG% on black
-
-if "%NEXT_COLOR%" eq "%LAST_COLOR%" goto :ReBG
-
-
-
-
-
-
-set LAST_COLOR_RANDFG_FULLCMD=color %NEXT_COLOR%
-   %LAST_COLOR_RANDFG_FULLCMD%
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL: :: Unfortunately, these internal variables don't actually work right:
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL:     set OLDFG=%_FG
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL:     set OLDBG=%_BG  
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL: 
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL: :ReBG
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL:     rem 8,15 = bright colors only // 0,15 = all colors
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL:     SET FG=%@RANDOM[8,15]                           
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL:     set NEXT_COLOR=%FG% on black
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL: 
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL: if "%NEXT_COLOR%" eq "%LAST_COLOR%" goto :ReBG
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL: 
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL: set LAST_COLOR_RANDFG_FULLCMD=color %NEXT_COLOR%
+REM OLD WAY UNTIL 2023/WINDOWS TERMINAL:    %LAST_COLOR_RANDFG_FULLCMD%
 

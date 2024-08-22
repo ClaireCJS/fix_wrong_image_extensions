@@ -16,7 +16,7 @@ set OUR_LOGGING_LEVEL=None
 for %command in (%*) do (
     set clean_command=%command%
     if "%@REGEXSUB[1,(.*)/(.*),%command]" ne "" (set clean_command=%@REGEXSUB[1,(.*)/(.*),%command])
-    call logging "command=%command, clean_command=%clean_command"
+    rem call logging "command=%command, clean_command=%clean_command"
     set search_results=%@SEARCH[%clean_command]
     if not isalias %clean_command .and. not isInternal %clean_command .and. "%search_results%" eq "" (
         call fatal_error "FATAL ERROR! %clean_command is not in your path, and needs to be."

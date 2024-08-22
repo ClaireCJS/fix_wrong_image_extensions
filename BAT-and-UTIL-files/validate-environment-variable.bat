@@ -1,19 +1,28 @@
-@echo off
-
-:REQUIRES: exit-maybe.bat, warning.bat, white-noise.bat (optional), bigecho.bat (optional), car.bat, nocar.bat, fatalerror.bat
-
-::::: USAGE:
-    :: call validate-environment-variable VARNAME_NO_PERCENT "some error message" or "skip_validation_existence"
-    ::      where option can be:
-    ::                           "skip_validation_existence" to skip existence validation
-    ::                           "some error message"        to be additional information provided to user if there is an error
+@Echo off
 
 ::::: GET PARAMETERS:
-    set VEVPARAMS=%*
-    set VARNAME=%1                                                                           %+ if %DEBUG_VALIDATE_ENV_VAR% eq 1 echo %DEBUGPREFIX% if defined %VARNAME% goto :Defined_YES
+    set VEVPARAMS=%1$
+    set VARNAME=%1      
     set PARAM2=%2
     set PARAM3=%3
     set USER_MESSAGE=%2$
+    if %DEBUG_VALIDATE_ENV_VAR% eq 1 (echo %DEBUGPREFIX% if defined %VARNAME% goto :Defined_YES)
+    set LAST_TITLE=%_WINTITLE
+    title %0
+
+:USAGE:  call validate-environment-variable VARNAME_NO_PERCENT "some error message" or "skip_validation_existence"
+:USAGE:       where option can be:
+:USAGE:                             "skip_validation_existence" to skip existence validation
+:USAGE:                             "some error message"        to be additional information provided to user if there is an error
+
+:REQUIRES: exit-maybe.bat, warning.bat, fatalerror.bat, white-noise.bat (optional), bigecho.bat (optional)
+:                                       REM car.bat, nocar.bat removed from requires 20230825
+
+
+::::: DEBUG STUFFS:
+    :echo %ANSI_COLOR_DEBUG% %0 called with 1=%1, 2=%2, VARNAME=%VARNAME%, VEVPARAMS=%VEVPARAMS% %ANSI_COLOR_RESET%
+    :echo on
+
 
 ::::: CLEAR LONGTERM ERROR FLAGS:
     set DEBUG_VALIDATE_ENV_VAR=0
@@ -25,46 +34,48 @@
     set ENVIRONMENT_VALIDATION_FAILED_VALUE=
     set DEBUGPREFIX=- {validate-environment-variable} * ``
 
-
 ::::: VALIDATE PARAMETERS STRICTLY
+    rem call debug "param3            is %param3%"
+    rem call debug "validate_multiple is %validate_multiple%"
+    rem call debug "about to check if PARAM3 [%param3%] ne '' .and. VALIDATE_MULTIPLE [%VALIDATE_MULTIPLE] ne 1 .... ALL_PARAMS is: %VEVPARAMS%"
     if "%PARAM3%" ne "" .and. %VALIDATE_MULTIPLE ne 1 (
-        call bigecho "%ANSI_COLOR_ALARM%*** ERROR! ***"
+        call bigecho "%ANSI_COLOR_ALARM%*** ENV VAR ERROR! ***"
         color bright white on red
         echo  We can't be passing a %italics%%blink%third%blink_off%%italics_off% parameter to validate-environment-variable.bat 
-        echo  %underline%Did you mean%underline_off%: %italics%validate-environment-varaible%double_underline%%blink%s%blink_off%%double_underline_off% %VEVPARAMS%%italics_off% 
+        echo  %underline%Did you mean%underline_off%: %italics%validate-environment-variable%double_underline%%blink%s%blink_off%%double_underline_off% %VEVPARAMS%%italics_off% 
         echo                                   (with an 's' after '%italics%variable%italics_off%')  ????
         call exit-maybe
         
-        set COMMENT=color white on black
-        set COMMENT=beep
-        set COMMENT=beep
-        set COMMENT=beep
-        set COMMENT=beep
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
-        set COMMENT=*pause
+        set VEV_COMMENT=color white on black
+        set VEV_COMMENT=beep
+        set VEV_COMMENT=beep
+        set VEV_COMMENT=beep
+        set VEV_COMMENT=beep
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
+        set VEV_COMMENT=*pause
 
         goto :END
     )
@@ -80,9 +91,14 @@
 
     if %VALIDATE_MULTIPLE ne 1 (
         gosub validate_environment_variable %VARNAME%
+
+        rem If this script gets aborted, leaving this flag set can create false errors:
+        unset /q VALIDATE_MULTIPLE 
     ) else (
         set USER_MESSAGE=
-        do i = 1 to %# (gosub validate_environment_variable %[%i])
+        do i = 1 to %# (
+                 gosub validate_environment_variable  %[%i]
+        )
     )
 
 
@@ -95,6 +111,7 @@ goto :Past_The_End_Of_The_Sub-Routines
 
 
     :validate_environment_variable [VARNAME]
+        rem debug: echo validate_environment_variable %varname%
         ::::: SEE IF IT IS DEFINED:
             if defined %VARNAME% (goto :Defined_YES)
             if ""  eq  %VARNAME% (goto :Defined_NO )
@@ -102,7 +119,7 @@ goto :Past_The_End_Of_The_Sub-Routines
                     ::::: REPOND IF IT IS NOT:
                         :Defined_NO
                             set ERROR=1
-                            set ERROR_MESSAGE=*** Environment variable '%underline%%italics%%blink%%1%italics_off%%blink_off%%underline_off%' is %double_Underline%not%double_Underline_off% defined, and needs to be!!! ***
+                            set ERROR_MESSAGE=*** Environment variable '%underline%%italics%%blink%%varname%%italics_off%%blink_off%%underline_off%' is %double_Underline%not%double_Underline_off% defined, and needs to be!!! ***
                             if %DEBUG_NORMALIZE_MESSAGE eq 1 (%COLOR_DEBUG% %+ echo - DEBUG: ERROR_MESSAGE[1]: %ERROR_MESSAGE% [length_diff=%LENGTH_DIFF%] [errlen=%ERROR_LENGTH,userlen=%USER_LENGTH])
                             if %DEBUG_NORMALIZE_MESSAGE eq 1 (%COLOR_DEBUG% %+ echo - DEBUG: `%`USER_MESSAGE`%` is '%USER_MESSAGE%')
                             if "%USER_MESSAGE%" ne "" goto :Do_It_1
@@ -141,7 +158,7 @@ goto :Past_The_End_Of_The_Sub-Routines
                                 set ERROR_MESSAGE=%NORMALIZED_ERROR_MESSAGE%
                             :Do_It_1_Done
                             if %DEBUG_NORMALIZE_MESSAGE eq 1 (%COLOR_DEBUG% %+ echo ERROR_MESSAGE[2]: %ERROR_MESSAGE% [length_diff=%LENGTH_DIFF%] [errlen=%ERROR_LENGTH,userlen=%USER_LENGTH])
-                            call bigecho "%ANSI_COLOR_ALARM%*** ERROR! ***"
+                            call bigecho "%ANSI_COLOR_ALARM%*** ENV VAR ERROR! ***"
                             %COLOR_ALARM%       
                             echos %ERROR_MESSAGE% 
                             %COLOR_NORMAL% 
@@ -158,11 +175,11 @@ goto :Past_The_End_Of_The_Sub-Routines
                                 REM important than simply advice -- 
                                 REM      -- it represents a system failure!!!
                                 REM ...so let's put asterisks around it, too!
-                                call warning "*** %@UNQUOTE[%USER_MESSAGE%] ***"
+                                call warning "%@UNQUOTE[%USER_MESSAGE%]"
                             )
                                 
-                            %COLOR_ALARM%           %+ echos %ERROR_MESSAGE% %+ %COLOR_NORMAL% %+ echo.
-                            call bigecho "%ANSI_COLOR_ALARM%*** ERROR! ***"
+                            %COLOR_ALARM%  %+ echos %ERROR_MESSAGE% %+ %COLOR_NORMAL% %+ echo.
+                            call bigecho "%ANSI_COLOR_ALARM%*** ENV VAR ERROR! ***"
                             REM call alarm-beep     %+ REM was too annoying for the severity of the corresponding situations
                             call white-noise 1      %+ REM reduced to 2 seconds, then after a year or few, reduced to 1 second
                             REM %COLOR_PROMPT% %+ pause %+ %COLOR_NORMAL%
@@ -182,12 +199,12 @@ goto :Past_The_End_Of_The_Sub-Routines
 
         ::::: ADDITIONALLY, VALIDATE THAT IT EXISTS, IF IT SEEMS TO BE POINTING TO A FOLDER/FILE:
             :Defined_YES
-            set VARVALUE=%[%VARNAME%]                        %+ if %DEBUG_VALIDATE_ENV_VAR% eq 1 (echo %DEBUGPREFIX%VARVALUE is %VARVALUE%)
-            set VARVALUEDRIVE=%@INSTR[0,1,%VARVALUE%])       %+ set IS_FILE_LOCATION=0
-            call   car >nul                                                                              %+ rem //Turn off the carat command-line separator so we can use it in regular expressions
-            if "1" eq "%@REGEX[^.?[A-Z]:,%@UPPER[%VARVALUE%]]" (set IS_FILE_LOCATION=1)
-            REM ON WINDOWS 10 AS OF 20220126 THIS CREATES PROBLEMS: call print-if-debug %DEBUGPREFIX%REGEXTEXT IS "%@REGEX[^[A-Z]:,%@UPPER[%VARVALUE%]]"
-            call nocar >nul                                                                              %+ rem //Turn on  the carat command-line separator so we can use it in our normal fasion
+            set VARVALUE=%[%VARNAME%]``                    %+ if %DEBUG_VALIDATE_ENV_VAR% eq 1 (echo %DEBUGPREFIX%VARVALUE is %VARVALUE%)
+            set VARVALUEDRIVE=%@INSTR[0,1,%VARVALUE%])     %+ set IS_FILE_LOCATION=0
+            setdos /x-5
+rem         if defined VARVALUE .and. "1" eq "%@REGEX[^[A-Z]:,%@UPPER[%VARVALUE%]]" (set IS_FILE_LOCATION=1)
+            if defined VARVALUE .and. "1" eq "%@REGEX[^[A-Z]:,%@UPPER[%VARVALUE%]]" (set IS_FILE_LOCATION=1)
+            setdos /x0
             if  "0" eq "%IS_FILE_LOCATION%"         (goto :DontValidateIfExists)
             if  "0" eq "%@READY[%VARVALUEDRIVE%]"   (goto :DontValidateIfExists)                         %+ rem //Don't look for if drive letter doesn't exist--it's SLOWWWWW
             if   1  eq  %SKIP_VALIDATION_EXISTENCE% (goto :DontValidateIfExists)                         %+ rem //Don't look for if we want to validate the variable only
@@ -244,3 +261,5 @@ goto :Past_The_End_Of_The_Sub-Routines
 :ItExistsAfterall
 :DontValidateIfExists
 :END
+call fix-window-title
+
